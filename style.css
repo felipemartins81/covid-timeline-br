@@ -1,0 +1,14 @@
+body {
+   background: url(./brazil.jpg) fixed no-repeat;
+   background-size: cover;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h1, h2 {
+   padding: 0 0 0 50px;
+   color: #aaa;
+   margin: 0;
+   font-size: 24px;
+}
+h2 {
+   font-size: 18px;
+}

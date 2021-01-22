@@ -3,18 +3,39 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
+      <title>Covid19 e a atuação do governo brasileiro diante da pandemia</title>
+      <link rel="stylesheet" href="./style.css">
       <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
-      <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
-      <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> -->
       <script id="twitter-widget-js"></script>
+      <!-- <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+      <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js'></script> -->
       <!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
    </head>
    <body>
-      <section id="chart-container" style="cursor:move">
-         <canvas id="chart"></canvas>
+      <h1>Covid19 e a atuação do governo brasileiro diante da pandemia</h1>
+      <section id="chart-container">
+         <canvas id="chart" width="2000" height="150"></canvas>
       </section>
+      <h2>Clique nos pontos do gráfico e relembre os fatos ocorridos, dia após dia, acompanhados pela quantidade de óbitos registrados no país.</h2>
       <script src="./chart.js"></script>
       <script src="./chart-tweets.js"></script>
+      <script>
+         if (window.screen.width > 600) {
+            const head = document.getElementsByTagName('head')[0];
+            const script1 = document.createElement('script');
+            script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js';
+            head.appendChild(script1);
+            const script2 = document.createElement('script');
+            script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js';
+            head.appendChild(script2);
+            setTimeout(() => {
+               $('html, body, *').mousewheel(function(e, delta) {
+                  this.scrollLeft -= (delta);
+               });
+            }, 1500);
+         }
+      </script>
    </body>
 </html>
