@@ -27,14 +27,16 @@
             const script1 = document.createElement('script');
             script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js';
             head.appendChild(script1);
-            const script2 = document.createElement('script');
-            script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js';
-            head.appendChild(script2);
+            setTimeout(() => {
+               const script2 = document.createElement('script');
+               script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js';
+               head.appendChild(script2);
+            }, 1000);
             setTimeout(() => {
                $('html, body, *').mousewheel(function(e, delta) {
                   this.scrollLeft -= (delta);
                });
-            }, 1500);
+            }, 2000);
          }
       </script>
    </body>
