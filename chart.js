@@ -1,3 +1,7 @@
+function isMobileScreen() {
+   return (window.screen.width < 600) ? true : false;
+}
+
 function resetHeaderScript() {
    const tagId = 'twitter-widget-js';
    const oldScript = document.getElementById(tagId);
@@ -7,16 +11,21 @@ function resetHeaderScript() {
       const script = document.createElement('script');
       script.id = tagId;
       script.type = 'text/javascript';
-      script.src = 'https://platform.twitter.com/widgets.js';
+      script.src = './twitter-widget.js';
       script.charset = 'utf-8';
       script.async = true;
       head.appendChild(script);
    });
 }
 
+function windowScrollRight() {
+   window.scroll(10000,0);
+}
+
 const tweets = [];
 function addTweet(date, count, showPrevious=false, content) {
-   const tweetContent = showPrevious ? content : content.replace('-tweet">', '-tweet" data-conversation="none">'); // data-theme="dark"
+   const _content = content.replace('data-partner="tweetdeck"', ''); // data-theme="dark"
+   const tweetContent = showPrevious ? _content : _content.replace('-tweet">', '-tweet" data-conversation="none">');
    tweets.push({
       date: date,
       count: count,
@@ -24,10 +33,11 @@ function addTweet(date, count, showPrevious=false, content) {
    });
 }
 
+let chart;
 window.onload = function() {
    let openedTooltip = null;
    const ctx = document.getElementById('chart').getContext('2d');
-   const chart = new Chart(ctx, {
+   chart = new Chart(ctx, {
       type: 'bar',
       data: {
          labels: tweets.map(e => e.date),
@@ -52,8 +62,9 @@ window.onload = function() {
       },
       options: {
          legend: null,
+         maintainAspectRatio: false,
          layout: {
-            padding: { left:20, right:20, top:10, bottom:10 }
+            padding: { left:20, right:20, top:20, bottom:20 }
          },
          events: ['click'],
          tooltips: {
@@ -70,7 +81,7 @@ window.onload = function() {
                tooltipEl.style.opacity = 1;
                tooltipEl.style.position = 'absolute';
                tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-               tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+               tooltipEl.style.top = (position.top + window.pageYOffset + tooltipModel.caretY + 15) + 'px';
                tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
                tooltipEl.style.fontSize = '16px';
                // tooltipEl.style.maxWidth = '500px';
@@ -88,6 +99,11 @@ window.onload = function() {
                      tooltipContainer.innerHTML = tooltipTemplate;
                   });
                   resetHeaderScript();
+                  if (item.index > (tweets.length - 15)) {
+                     setTimeout(() => {
+                        windowScrollRight();
+                     }, 1000);
+                  }
                }, 
             },
          },
@@ -113,27 +129,52 @@ window.onload = function() {
          }
       }
    });
+}
 
-   function removeTooltips() {
-      const toolTip = document.getElementById('chartjs-tooltip');
-      if (toolTip) {
-         toolTip.remove();
-         openedTooltip = null;
-      }
+function removeTooltips() {
+   const toolTip = document.getElementById('chartjs-tooltip');
+   if (toolTip) {
+      toolTip.remove();
+      openedTooltip = null;
    }
 }
 
-function setPageLayout() {
-   console.warn(tweets.length);
-   // document.getElementById('chart-container').style.width = '2000px';
-   // document.getElementById('chart-container').style.height = '800px';
-   // document.body.style.paddingRight = '200px';
-   // document.body.style.height = '600px'
-   document.body.style.width = (tweets.length * 50) + 'px';
-   // document.getElementById('chart').height = '180';
-
+function updateChartData(date, count, showPrevious=false, content) {
+   addTweet(date, count, showPrevious, content);
+   chart.data.labels.push(date);
+   chart.data.datasets.forEach(e => e.data.push(count));
+   chartUpdate();
 }
 
-// document.addEventListener('click', function (click) {
-   // click.stopPropagation();
-// });
+function chartUpdate() {
+   chart.update();
+   setPageLayout();
+}
+
+function setPageLayout() {
+   const screenSlice = isMobileScreen() ? 40 : 30;
+   document.body.style.width = (tweets.length * screenSlice) + 'px';
+   
+   document.getElementById('chart-container').style.width = (tweets.length * screenSlice) + 'px'; //'2000px';
+
+   if (isMobileScreen()) {
+      document.getElementById('chart-container').style.height = '400px';
+      document.getElementById('chart-container').style.position = 'relative';
+   }
+   else {
+      document.getElementById('chart-container').style.height = '600px';
+      setTimeout(() => {
+         document.body.style.overflow = 'hidden';
+      }, 1000);
+      setTimeout(() => {
+         document.body.style.overflow = 'scroll';
+      }, 1050);
+   }
+}
+
+document.addEventListener('click', function (click) {
+   if (click.path[0].nodeName != 'CANVAS') {
+      removeTooltips();
+   }
+   click.stopPropagation();
+});

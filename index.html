@@ -16,13 +16,15 @@
    <body>
       <h1>Covid19 e a atuação do governo brasileiro diante da pandemia</h1>
       <section id="chart-container">
-         <canvas id="chart" width="2000" height="150"></canvas>
+         <canvas id="chart"></canvas>
       </section>
-      <h2>Clique nos pontos do gráfico e relembre os fatos ocorridos, dia após dia, acompanhados pela quantidade de óbitos registrados no país.</h2>
+      <h2 style="margin:0 0 50px;">Clique nos pontos do gráfico e relembre os fatos ocorridos, dia após dia, acompanhados pela quantidade de óbitos registrados no país.</h2>
+      <button onclick="showNextTweets()" id="showNext">Avançar &rsaquo;</button>
+      <!-- <button>Ver tudo &rsaquo;&rsaquo;</button> -->
       <script src="./chart.js"></script>
       <script src="./chart-tweets.js"></script>
       <script>
-         if (window.screen.width > 600) {
+         if (!isMobileScreen()) {
             const head = document.getElementsByTagName('head')[0];
             const script1 = document.createElement('script');
             script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js';
