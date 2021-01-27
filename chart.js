@@ -20,6 +20,9 @@ function resetHeaderScript() {
 
 function windowScrollRight() {
    window.scroll(10000,0);
+   setTimeout(() => {
+      window.scroll(10000,0);
+   }, 2000);
 }
 
 const tweets = [];
@@ -31,6 +34,7 @@ function addTweet(date, count, showPrevious=false, content) {
       count: count,
       content: tweetContent.replace('<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>', '')
    });
+   document.getElementById('background-text').textContent = count;
 }
 
 let chart;
@@ -63,10 +67,13 @@ window.onload = function() {
       options: {
          legend: null,
          maintainAspectRatio: false,
+         events: ['click'],
+         scales: {
+            yAxes: [{ position: 'right' }]
+         },
          layout: {
             padding: { left:20, right:20, top:20, bottom:20 }
          },
-         events: ['click'],
          tooltips: {
             enabled: false,
             custom: function(tooltipModel) {
@@ -154,14 +161,16 @@ function chartUpdate() {
 function setPageLayout() {
    const screenSlice = isMobileScreen() ? 40 : 30;
    document.body.style.width = (tweets.length * screenSlice) + 'px';
-   
-   document.getElementById('chart-container').style.width = (tweets.length * screenSlice) + 'px'; //'2000px';
-
+   document.getElementById('chart-container').style.width = (tweets.length * screenSlice) + 'px';
    if (isMobileScreen()) {
+      document.body.style.minWidth = (window.screen.width - 50) +'px';
+      document.body.style.backgroundImage = 'url(./brazil-v.jpg)';
+      document.body.style.backgroundSize = 'contain';
       document.getElementById('chart-container').style.height = '400px';
       document.getElementById('chart-container').style.position = 'relative';
    }
    else {
+      document.body.style.minWidth = '1200px';
       document.getElementById('chart-container').style.height = '600px';
       setTimeout(() => {
          document.body.style.overflow = 'hidden';
