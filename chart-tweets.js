@@ -1,4 +1,3 @@
-
 const tweetList = [
    {date:'2019', count:NaN, showPrevious:'', content:``},
    {date:'12/12', count:0, showPrevious:'', content:`<blockquote class="twitter-tweet"><p lang="pt" dir="ltr">12 DE DEZEMBRO DE 2019<br><br>Cientistas chineses detectam um novo surto viral que, apenas no mês seguinte, em referência à oitava cidade mais populosa da China, seria noticiado como “vírus de Wuhan“.<a href="https://t.co/Gn8LviuG1p">https://t.co/Gn8LviuG1p</a></p>&mdash; Marlos Ápyus (@apyus) <a href="https://twitter.com/apyus/status/1351967938790760451?ref_src=twsrc%5Etfw">January 20, 2021</a></blockquote>`},
